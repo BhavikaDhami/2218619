@@ -18,3 +18,4 @@ export const fetchOriginalUrl = async (shortCode) => {
   const response = await axios.get(`${API_BASE_URL}/url/${shortCode}`);
   return response.data;
 };
+

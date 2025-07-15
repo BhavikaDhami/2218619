@@ -6,7 +6,7 @@ const clientSecret = "JEGUPzgpRvSKsEza";
 
 export default function HomePage() {
   const [originalUrl, setOriginalUrl] = useState("");
-  const [validityInMinutes, setValidityInMinutes] = useState(60);
+  const [validityInMinutes, setValidityInMinutes] = useState(30);
   const [shortenedUrl, setShortenedUrl] = useState("");
   const [error, setError] = useState("");
 
@@ -24,17 +24,20 @@ export default function HomePage() {
       setShortenedUrl(response.shortUrl);
       setError("");
     } catch {
-      setError("Failed to shorten URL. Please check your credentials.");
+      setError("Failed to shorten URL");
     }
   };
 
   return (
+    <div style={styles.body}>
+
+   
     <div style={styles.container}>
-      <h1 style={styles.heading}>URL Shortener</h1>
+      <h1 style={styles.heading}>URL Shortener App</h1>
 
       <input
         type="text"
-        placeholder="Enter URL here"
+        placeholder="Enter URL"
         value={originalUrl}
         onChange={(e) => setOriginalUrl(e.target.value)}
         style={styles.input}
@@ -42,7 +45,7 @@ export default function HomePage() {
 
       <input
         type="number"
-        placeholder="Validity in minutes (default 60)"
+        placeholder="Validity in minutes (default 30)"
         value={validityInMinutes}
         onChange={(e) => setValidityInMinutes(Number(e.target.value))}
         style={styles.input}
@@ -63,33 +66,35 @@ export default function HomePage() {
 
       {error && <div style={styles.errorBox}>{error}</div>}
     </div>
+     </div>
   );
 }
 
 const styles = {
   container: {
-    maxWidth: "500px",
+    maxWidth: "800px",
     margin: "50px auto",
     padding: "20px",
     border: "1px solid #ddd",
     borderRadius: "8px",
     boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
     textAlign: "center",
+    backgroundColor:"Blue"
   },
   heading: {
-    marginBottom: "20px",
+    marginBottom: "40px",
     fontSize: "24px",
   },
   input: {
     display: "block",
-    width: "100%",
+    width: "90%",
     padding: "10px",
     margin: "10px 0",
     borderRadius: "4px",
     border: "1px solid #ccc",
   },
   button: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#ff0000ff",
     color: "white",
     padding: "10px 20px",
     border: "none",
@@ -98,14 +103,14 @@ const styles = {
     marginTop: "10px",
   },
   successBox: {
-    backgroundColor: "#D4EDDA",
-    color: "#155724",
+    backgroundColor: "yellow",
+    color: "purple",
     padding: "10px",
     marginTop: "20px",
     borderRadius: "4px",
   },
   errorBox: {
-    backgroundColor: "#F8D7DA",
+    backgroundColor: "pink",
     color: "#721C24",
     padding: "10px",
     marginTop: "20px",
