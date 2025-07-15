@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { shortenUrl } from "../api/urlService";
+import { logEvent } from "../middleware/logger";
 
 const clientId = "26dea20a-2910-423a-977c-d045499ee6d6";
 const clientSecret = "JEGUPzgpRvSKsEza";
@@ -25,6 +26,7 @@ export default function HomePage() {
       setError("");
     } catch {
       setError("Failed to shorten URL");
+      logEvent("Frontend Error", "ERROR", "Homepage", "Failed to fetch short URL");
     }
   };
 

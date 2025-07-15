@@ -1,21 +1,58 @@
-import axios from "axios";
+import { logEvent } from "../middleware/logger";   // ✅ Import logger
 
-const API_BASE_URL = "https://open-short.up.railway.app/api/v1";
+export async function shortenUrl(payload, clientId, clientSecret) {
+  try {
+    const response = await fetch(`http://20.244.56.144/url`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        clientId: clientId,
+        clientSecret: clientSecret,
+      },
+      body: JSON.stringify(payload),
+    });
 
-export const shortenUrl = async (data, clientId, clientSecret) => {
-  const headers = { clientId, clientSecret };
-  const response = await axios.post(`${API_BASE_URL}/url`, data, { headers });
-  return response.data;
-};
+    if (!response.ok) throw new Error("Failed to shorten URL");
+    return await response.json();
+  } catch (error) {
+    logEvent(error.stack, "ERROR", "urlService", "API error in shortenUrl");
+    throw error;
+  }
+}
 
-export const fetchStats = async (shortCode, clientId, clientSecret) => {
-  const headers = { clientId, clientSecret };
-  const response = await axios.get(`${API_BASE_URL}/url/stats/${shortCode}`, { headers });
-  return response.data;
-};
+export async function fetchStats(shortUrl, clientId, clientSecret) {
+  try {
+    const response = await fetch(`http://20.244.56.144/url/stats?shortUrl=${encodeURIComponent(shortUrl)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        clientId: clientId,
+        clientSecret: clientSecret,
+      },
+    });
 
-export const fetchOriginalUrl = async (shortCode) => {
-  const response = await axios.get(`${API_BASE_URL}/url/${shortCode}`);
-  return response.data;
-};
+    if (!response.ok) throw new Error("Failed to fetch URL stats");
+    return await response.json();
+  } catch (error) {
+    logEvent(error.stack, "ERROR", "urlService", "API error in fetchStats");
+    throw error;
+  }
+}
+export async function fetchOriginalUrl(shortUrl, clientId, clientSecret) {
+  try {
+    const response = await fetch(`http://20.244.56.144/url?shortUrl=${encodeURIComponent(shortUrl)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        clientId: clientId,
+        clientSecret: clientSecret,
+      },
+    });
 
+    if (!response.ok) throw new Error("Failed to fetch original URL");
+    return await response.json();
+  } catch (error) {
+    logEvent(error.stack, "ERROR", "urlService", "API error in fetchOriginalUrl");
+    throw error;
+  }
+}
